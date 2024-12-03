@@ -42,7 +42,7 @@
 	}
 	
 	// Retrieve existing value for key_owm for form population
-	$key_owm_value = isset( $weather_atlas_settings[ 'key_owm' ] ) ? $weather_atlas_settings[ 'key_owm' ] : '';
+	$key_owm_value = isset( $weather_atlas_settings[ 'key_owm' ] ) ? $weather_atlas_settings[ 'key_owm' ] : NULL;
 
 ?>
 

@@ -222,7 +222,7 @@
 			);
 			
 			// Define the additional links to append to the existing links
-			$links_suffix = array ();
+			$links_suffix = [];
 			
 			// Merge the new links with existing ones and return them
 			return array_merge( $links_prefix, $links, $links_suffix );

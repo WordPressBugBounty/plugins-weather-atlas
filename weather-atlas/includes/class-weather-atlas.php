@@ -67,7 +67,7 @@
 			}
 			else
 			{
-				$this->version = '3.0.1';
+				$this->version = '3.0.2';
 			}
 			
 			// Set the plugin name.
@@ -235,7 +235,7 @@
 				'wp-blocks',
 				'wp-element',
 				'wp-editor'
-			), file_exists( $script_file_path ) ? filemtime( $script_file_path ) : FALSE );
+			),                  file_exists( $script_file_path ) ? filemtime( $script_file_path ) : FALSE );
 			
 			register_block_type( 'weather-atlas/weather-widget', array (
 				'editor_script'   => 'weather-atlas-block-editor',
@@ -878,6 +878,7 @@
 							$url .= "/" . ${'country_name_rewrite_' . $language_root_wp} . "/" . ${'city_name_rewrite_' . $language_root_wp};
 						}
 						
+						$url_units = "";
 						if ( $country_selector == 250 && $unit_c_f == 'c' )
 						{
 							$url_units = "?units=c,mm,mb,km";
@@ -885,10 +886,6 @@
 						elseif ( $country_selector != 250 && $unit_c_f == 'f' )
 						{
 							$url_units = "?units=f,in,in,mi";
-						}
-						else
-						{
-							$url_units = "";
 						}
 						
 						//
@@ -978,11 +975,11 @@
 						
 						//
 						
-						if ( ( ! empty( $text_tomorrow ) ) AND ( $random_url == 2 ) )
+						if ( ( ! empty( $text_tomorrow ) ) and ( $random_url == 2 ) )
 						{
 							$random_url = 3;
 						}
-						if ( ( ! empty( $text_long_term ) ) AND ( $random_url == 3 ) )
+						if ( ( ! empty( $text_long_term ) ) and ( $random_url == 3 ) )
 						{
 							$random_url = 2;
 						}
@@ -1071,7 +1068,7 @@
 		if ( FALSE === ( $value = get_transient( $weather_transient_name ) ) )
 		{
 			$weather_atlas_settings = get_option( 'weather_atlas_settings', [] );
-			$key_owm                = isset( $weather_atlas_settings[ 'key_owm' ] ) ? $weather_atlas_settings[ 'key_owm' ] : '';
+			$key_owm                = isset( $weather_atlas_settings[ 'key_owm' ] ) ? $weather_atlas_settings[ 'key_owm' ] : NULL;
 			
 			$wp_remote_get_url      = 'https://www.weather-atlas.com/weather/api.php';
 			$wp_remote_get_url      .= '?city_selector=' . $city_selector;
@@ -1189,7 +1186,7 @@
 		{
 			$background = $background . weather_atlas_hex( weather_atlas_range_pos( $celsius, 18, 10 ) * 255 );
 		}
-		if ( ( $celsius < 10 ) OR ( $celsius > 10 ) )
+		if ( ( $celsius < 10 ) or ( $celsius > 10 ) )
 		{
 			$color = "fff";
 		}

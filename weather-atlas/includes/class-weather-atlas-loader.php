@@ -42,8 +42,8 @@
 		 */
 		public function __construct()
 		{
-			$this->actions = array ();
-			$this->filters = array ();
+			$this->actions = [];
+			$this->filters = [];
 		}
 		
 		/**
@@ -113,7 +113,7 @@
 				add_filter( $hook[ 'hook' ], array (
 					$hook[ 'component' ],
 					$hook[ 'callback' ]
-				), $hook[ 'priority' ], $hook[ 'accepted_args' ] );
+				),          $hook[ 'priority' ], $hook[ 'accepted_args' ] );
 			}
 			
 			foreach ( $this->actions as $hook )
@@ -121,7 +121,7 @@
 				add_action( $hook[ 'hook' ], array (
 					$hook[ 'component' ],
 					$hook[ 'callback' ]
-				), $hook[ 'priority' ], $hook[ 'accepted_args' ] );
+				),          $hook[ 'priority' ], $hook[ 'accepted_args' ] );
 			}
 		}
 		

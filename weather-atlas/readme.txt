@@ -199,6 +199,11 @@ Selecting "Update Translations" will download and install your updated local tra
 
 == Changelog ==
 
+= 3.0.2 =
+*Release Date: 2024-12-03*
+
+* fixed possible XSS Vulnerability
+
 = 3.0.1 =
 *Release Date: 2024-05-07*
 

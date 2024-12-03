@@ -18,8 +18,8 @@
 	text-transform : uppercase
 	}
 .weather-atlas-wrapper .weather-atlas-body {
-	margin    : 0 auto;
-	padding   : .9em 1.4em
+	margin  : 0 auto;
+	padding : .9em 1.4em
 	}
 @media (min-width : 480px) {
 	.weather-atlas-wrapper .current_horizontal {

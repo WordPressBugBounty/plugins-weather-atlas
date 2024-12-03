@@ -477,6 +477,3 @@
 	echo __( 'Wintry Mix to Snow', 'weather-atlas' );
 	echo __( 'Wintry Mix', 'weather-atlas' );
 	echo __( 'Wintry Precipitation', 'weather-atlas' );
-	
-	
-	
