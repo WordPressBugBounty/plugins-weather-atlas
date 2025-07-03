@@ -67,7 +67,7 @@
 			}
 			else
 			{
-				$this->version = '3.0.2';
+				$this->version = '3.0.3';
 			}
 			
 			// Set the plugin name.
@@ -252,7 +252,7 @@
 			if ( isset( $attributes[ 'selected_widget_id' ] ) )
 			{
 				// New shortcode format
-				$widget_id  = $attributes[ 'selected_widget_id' ];
+				$widget_id  = isset( $attributes[ 'selected_widget_id' ] ) ? sanitize_key( $attributes[ 'selected_widget_id' ] ) : '';
 				$attributes = get_option( 'weather_atlas_widget_' . $widget_id );
 			}
 			elseif ( isset( $attributes[ 'city_selector' ] ) )
@@ -639,7 +639,7 @@
 						// Show the current temperature if set and numeric.
 						if ( isset( ${'current_temp_' . $unit_c_f} ) && is_numeric( ${'current_temp_' . $unit_c_f} ) )
 						{
-							echo "<span class='temp'>" . ${'current_temp_' . $unit_c_f} . $def_unit_degree . "</span>";
+							echo "<span class='temp'>" . esc_html( ${'current_temp_' . $unit_c_f} . $def_unit_degree ) . "</span>";
 						}
 						
 						// Display current weather text if available.
@@ -720,7 +720,7 @@
 							{
 								if ( array_key_exists( $ii, $weather_atlas_data_array[ 'hourly' ] ) )
 								{
-									echo "<span class='extended_hour extended_hour_$ii'>";
+									echo "<span class='extended_hour extended_hour_" . esc_attr( $ii ) . "'>";
 									
 									// Get hour information from the data array.
 									$hour = array_key_exists( 'hour', $weather_atlas_data_array[ 'hourly' ][ $ii ] ) ? $weather_atlas_data_array[ 'hourly' ][ $ii ][ 'hour' ] : FALSE;
@@ -768,21 +768,20 @@
 									// ${'hour_visibility_' . $unit_km_mi} = array_key_exists( 'hour_visibility_' . $unit_km_mi, $weather_atlas_data_array[ 'hourly' ][ $ii ] ) ? $weather_atlas_data_array[ 'hourly' ][ $ii ][ 'hour_visibility_' . $unit_km_mi ] : FALSE;
 									// $weather_hourly_uv_index                      = array_key_exists( 'hour_uv_index', $weather_atlas_data_array[ 'hourly' ][ $ii ] ) ? $weather_atlas_data_array[ 'hourly' ][ $ii ][ 'hour_uv_index' ] : FALSE;
 									
-									echo "<span class='extended_hour extended_hour_$ii'";
+									echo "<span class='extended_hour extended_hour_" . esc_attr( $ii ) . "'";
+									
 									if ( ! empty( $hour_text_en ) )
 									{
-										echo " title='";
-										echo __( $hour_text_en, 'weather-atlas' );
-										echo "'";
+										echo " title='" . esc_attr( __( $hour_text_en, 'weather-atlas' ) ) . "'";
 									}
 									echo ">";
 									if ( is_numeric( ${'hour_temp_' . $unit_c_f} ) )
 									{
-										echo ${'hour_temp_' . $unit_c_f} . "<small>" . $def_unit_temperature . "</small>";
+										echo esc_html( ${'hour_temp_' . $unit_c_f} ) . "<small>" . esc_html( $def_unit_temperature ) . "</small>";
 									}
 									if ( ! empty( $weather_hourly_icon ) )
 									{
-										echo "<br/><i class='wi wi-fw wi-weather-$weather_hourly_icon'></i>";
+										echo "<br/><i class='wi wi-fw wi-weather-" . esc_attr( $weather_hourly_icon ) . "'></i>";
 									}
 									echo "</span>";
 								}
@@ -805,7 +804,7 @@
 							{
 								if ( array_key_exists( $ii, $weather_atlas_data_array[ 'daily' ] ) )
 								{
-									echo "<span class='extended_day extended_day_$ii'>";
+									echo "<span class='extended_day extended_day_" . esc_attr( $ii ) . "'>";
 									
 									// Get the short day name and display it if available.
 									$day_name_en_short = array_key_exists( 'day_name_en_short', $weather_atlas_data_array[ 'daily' ][ $ii ] ) ? $weather_atlas_data_array[ 'daily' ][ $ii ][ 'day_name_en_short' ] : FALSE;
@@ -839,7 +838,8 @@
 									// $weather_daily_uv_index                  = array_key_exists( 'day_uv_index', $weather_atlas_data_array[ 'daily' ][ $ii ] ) ? $weather_atlas_data_array[ 'daily' ][ $ii ][ 'day_uv_index' ] : FALSE;
 									
 									// Build the HTML structure for each day.
-									echo "<span class='extended_day extended_day_$ii'";
+									echo "<span class='extended_day extended_day_" . esc_attr( $ii ) . "'";
+									
 									if ( ! empty( $day_text_en ) )
 									{
 										echo " title='" . esc_attr( __( $day_text_en, 'weather-atlas' ) ) . "'";
@@ -849,7 +849,7 @@
 									// Display high and low temperatures.
 									if ( is_numeric( ${'day_temp_high_' . $unit_c_f} ) )
 									{
-										echo ( ${'day_temp_high_' . $unit_c_f} != '-99' ) ? esc_html( ${'day_temp_high_' . $unit_c_f} ) . "<small>" . esc_html( $def_unit_temperature ) . "</small> / " : "min ";
+										echo ( ${'day_temp_high_' . $unit_c_f} != '-99' ) ? esc_html( ${'day_temp_high_' . $unit_c_f} ) . "<small>" . esc_html( $def_unit_temperature ) . "</small> / " : esc_html__( 'min', 'weather-atlas' );
 									}
 									if ( is_numeric( ${'day_temp_low_' . $unit_c_f} ) )
 									{
@@ -901,37 +901,47 @@
 						
 						if ( ! empty( $text_today ) )
 						{
-							echo "<a href='" . esc_url( $url . $url_units ) . "' title='" . esc_attr( ${'city_name_' . $language_root_wp} ) . ", " . esc_attr( $country_name_abbr ) . " - " . esc_attr( __( 'Weather forecast for today' ) ) . "' style='color:" . esc_attr( $text_color ) . "'>";
-							echo esc_html( __( 'Weather forecast for today' ) );
+							$title_text = esc_attr( ${'city_name_' . $language_root_wp} ) . ', ' . esc_attr( $country_name_abbr ) . ' - ' . esc_attr__( 'Weather forecast for today', 'weather-atlas' );
+							$url_final  = esc_url( $url . $url_units );
+							
+							echo "<a href='{$url_final}' title='{$title_text}' style='color:" . esc_attr( $text_color ) . "'>";
+							echo esc_html__( 'Weather forecast for today', 'weather-atlas' );
 							echo "</a>";
 							echo "<hr style='border:" . esc_attr( $border_color ) . "'>";
-							
-							echo nl2br( ${'text_today_' . $unit_c_f} ) . "<br /><br />";
+							echo nl2br( esc_html( ${'text_today_' . $unit_c_f} ) ) . "<br /><br />";
 						}
 						
 						//
 						
 						if ( ! empty( $text_tomorrow ) )
 						{
-							echo "<a href='" . esc_url( $url . "-" . esc_attr( ${'def_tomorrow_rewrite_' . $language_root_wp} ) . $url_units ) . "' title='" . esc_attr( ${'city_name_' . $language_root_wp} ) . ", " . esc_attr( $country_name_abbr ) . " - " . esc_attr( __( 'Weather forecast for tomorrow' ) ) . "' style='color:" . esc_attr( $text_color ) . "'>";
-							echo esc_html( __( 'Weather forecast for tomorrow' ) );
+							$rewrite    = rawurlencode( ${'def_tomorrow_rewrite_' . $language_root_wp} );
+							$url_final  = esc_url( $url . '-' . $rewrite . $url_units );
+							$title_text = esc_attr( ${'city_name_' . $language_root_wp} ) . ', ' . esc_attr( $country_name_abbr ) . ' - ' . esc_attr__( 'Weather forecast for tomorrow', 'weather-atlas' );
+							
+							echo "<a href='{$url_final}' title='{$title_text}' style='color:" . esc_attr( $text_color ) . "'>";
+							echo esc_html__( 'Weather forecast for tomorrow', 'weather-atlas' );
 							echo "</a>";
 							echo "<hr style='border:" . esc_attr( $border_color ) . "'>";
-							
-							echo nl2br( ${'text_tomorrow_' . $unit_c_f} ) . "<br /><br />";
+							echo nl2br( esc_html( ${'text_tomorrow_' . $unit_c_f} ) ) . "<br /><br />";
 						}
 						
 						//
 						
 						if ( ! empty( $text_long_term ) )
 						{
-							echo "<a href='" . esc_url( $url . "-" . esc_attr( ${'def_long_term_rewrite_' . $language_root_wp} ) . $url_units ) . "' title='" . esc_attr( ${'city_name_' . $language_root_wp} ) . ", " . esc_attr( $country_name_abbr ) . " - " . esc_attr( __( '10 days weather forecast' ) ) . "' style='color:" . esc_attr( $text_color ) . "'>";
-							echo esc_html( __( 'Long term weather forecast' ) );
+							$rewrite    = rawurlencode( ${'def_long_term_rewrite_' . $language_root_wp} );
+							$url_final  = esc_url( $url . '-' . $rewrite . $url_units );
+							$title_text = esc_attr( ${'city_name_' . $language_root_wp} ) . ', ' . esc_attr( $country_name_abbr ) . ' - ' . esc_attr__( '10 days weather forecast', 'weather-atlas' );
+							
+							echo "<a href='{$url_final}' title='{$title_text}' style='color:" . esc_attr( $text_color ) . "'>";
+							echo esc_html__( 'Long term weather forecast', 'weather-atlas' );
 							echo "</a>";
 							echo "<hr style='border:" . esc_attr( $border_color ) . "'>";
-							
-							echo nl2br( ${'text_long_term_' . $unit_c_f} ) . "<br /><br />";
+							echo nl2br( esc_html( ${'text_long_term_' . $unit_c_f} ) ) . "<br /><br />";
 						}
+						
+						//
 						
 						if ( $text_today == '1' || $text_tomorrow == '1' || $text_long_term == '1' )
 						{
@@ -990,26 +1000,25 @@
 						{
 							case 2:
 								// Append tomorrow's weather rewrite to the URL and set the title
-								$url   .= "-" . esc_attr( ${'def_tomorrow_rewrite_' . $language_root_wp} );
-								$title = esc_html( __( 'Weather forecast for tomorrow' ) );
+								$url   .= "-" . rawurlencode( ${'def_tomorrow_rewrite_' . $language_root_wp} );
+								$title = esc_html__( 'Weather forecast for tomorrow', 'weather-atlas' );
 								break;
 							
 							case 3:
 								// Append long-term forecast rewrite to the URL and set the title
-								$url   .= "-" . esc_attr( ${'def_long_term_rewrite_' . $language_root_wp} );
-								$title = esc_html( __( '10 days weather forecast' ) );
+								$url   .= "-" . rawurlencode( ${'def_long_term_rewrite_' . $language_root_wp} );
+								$title = esc_html__( '10 days weather forecast', 'weather-atlas' );
 								break;
 							
 							case 4:
 								// Append climate forecast rewrite to the URL and set the title
-								$url   .= "-" . esc_attr( ${'def_climate_rewrite_' . $language_root_wp} );
-								$title = esc_html( __( 'Climate' ) );
+								$url   .= "-" . rawurlencode( ${'def_climate_rewrite_' . $language_root_wp} );
+								$title = esc_html__( 'Climate', 'weather-atlas' );
 								break;
 							
 							default:
 								// Use the default weather forecast title and base URL
-								$title = esc_html( __( 'Weather forecast' ) );
-								
+								$title = esc_html__( 'Weather forecast', 'weather-atlas' );
 								break;
 						}
 						
@@ -1022,7 +1031,7 @@
 							echo "<span class='weather-atlas-footer-block'>";
 							echo esc_html( ${'city_name_' . $language_root_wp} ) . ", " . esc_html( $country_name_abbr );
 							echo "</span>";
-							echo " " . esc_html( strtolower( $title ) ) . " &#9656;";
+							echo " " . strtolower( esc_html( $title ) ) . " &#9656;";
 							echo "</a>";
 						}
 						else

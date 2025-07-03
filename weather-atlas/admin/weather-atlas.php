@@ -42,7 +42,7 @@
 	<!-- Display feedback message if set -->
 	<?php if ( isset( $feedback_message ) ): ?>
 		<div class="notice notice-success">
-			<p><?php echo $feedback_message; ?></p>
+			<p><?php echo esc_html( $feedback_message ); ?></p>
 		</div>
 	<?php endif; ?>
 	
@@ -55,10 +55,13 @@
 		
 		// Unserialize and sort $widgets by 'widget_name'
 		usort( $widgets, function( $a, $b ) {
-			$a_data = unserialize( $a->option_value );
-			$b_data = unserialize( $b->option_value );
+			$a_data = maybe_unserialize( $a->option_value );
+			$b_data = maybe_unserialize( $b->option_value );
 			
-			return strcmp( $a_data[ "widget_name" ], $b_data[ "widget_name" ] );
+			$a_name = sanitize_text_field( $a_data[ "widget_name" ] ?? '' );
+			$b_name = sanitize_text_field( $b_data[ "widget_name" ] ?? '' );
+			
+			return strcmp( $a_name, $b_name );
 		} );
 		
 		foreach ( $widgets as $option )
@@ -66,8 +69,10 @@
 			$widget_data = maybe_unserialize( $option->option_value );
 			
 			// Extract widget ID from the option name
-			$widget_id   = str_replace( "weather_atlas_widget_", "", $option->option_name );
-			$widget_name = isset( $widget_data[ 'widget_name' ] ) ? $widget_data[ 'widget_name' ] : 'Weather Atlas Widget ' . $widget_id;
+			$widget_id = str_replace( "weather_atlas_widget_", "", $option->option_name );
+			
+			$widget_name_raw = $widget_data[ 'widget_name' ] ?? 'Weather Atlas Widget ' . $widget_id;
+			$widget_name     = esc_html( $widget_name_raw );
 			
 			// Generate edit link
 			$edit_link = admin_url( 'admin.php?page=weather-atlas-widget&edit_widget_id=' . $widget_id );

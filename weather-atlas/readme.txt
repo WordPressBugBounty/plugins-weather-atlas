@@ -3,7 +3,7 @@ Contributors:       weatheratlas
 Donate link:        https://www.weather-atlas.com
 Tags:               weather, weather widget, forecast, location, weather atlas
 Requires at least:  4.0
-Tested up to:       6.5.2
+Tested up to:       6.8
 Stable tag:         trunk
 License:            GPLv2 or later
 License URI:        http://www.gnu.org/licenses/gpl-2.0.html
@@ -198,6 +198,15 @@ Selecting "Update Translations" will download and install your updated local tra
 
 
 == Changelog ==
+
+= 3.0.3 =
+*Release Date: 2025-07-03*
+
+* fixed possible XSS Vulnerability
+* Security: Escaped all user-facing output using proper functions (esc_html, esc_attr, esc_url)
+* Security: Sanitized all user input and shortcode attributes
+* Security: Improved safety of dynamic variables and URL composition
+* Tweak: Code cleanup and minor improvements to data handling
 
 = 3.0.2 =
 *Release Date: 2024-12-03*

@@ -111,7 +111,7 @@
 	
 	<?php if ( isset( $feedback_message ) ): ?>
 		<div class="notice notice-success">
-			<p><?php echo $feedback_message; ?></p>
+			<p><?php echo esc_html( $feedback_message ); ?></p>
 		</div>
 	<?php endif; ?>
 	
