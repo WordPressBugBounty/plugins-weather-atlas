@@ -67,7 +67,7 @@
 			}
 			else
 			{
-				$this->version = '3.0.3';
+				$this->version = '3.0.4';
 			}
 			
 			// Set the plugin name.

@@ -63,7 +63,7 @@
 		public function admin_init_actions()
 		{
 			// Check if it's the main admin page
-			if ( is_admin() && isset( $_GET[ 'page' ] ) && $_GET[ 'page' ] === $this->plugin_name )
+			if ( is_admin() && isset( $_GET[ 'page' ] ) && sanitize_key( $_GET[ 'page' ] ) === $this->plugin_name )
 			{
 				$this->check_version_update();
 				$this->check_and_perform_conversion();
@@ -89,7 +89,7 @@
 		 */
 		public function enqueue_scripts()
 		{
-			if ( is_admin() && isset( $_GET[ 'page' ] ) && $_GET[ 'page' ] === $this->plugin_name . '-widget' )
+			if ( is_admin() && isset( $_GET[ 'page' ] ) && sanitize_key( $_GET[ 'page' ] ) === $this->plugin_name . '-widget' )
 			{
 				wp_enqueue_script( $this->plugin_name . '-admin', plugins_url( 'admin/js/weather-atlas-admin.min.js', dirname( __FILE__ ) ), array (), $this->version, TRUE );
 				

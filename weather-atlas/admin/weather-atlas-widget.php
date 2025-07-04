@@ -1,13 +1,13 @@
 <?php
 	
-	// Check if editing an existing widget
-	$editing = isset( $_GET[ 'edit_widget_id' ] );
+	$widget_id   = '';
+	$widget_data = [];
 	
-	// Conditionally load data based on whether we are editing or creating a new widget
-	if ( $editing )
+	// Check if editing an existing widget
+	if ( isset( $_GET[ 'edit_widget_id' ] ) )
 	{
-		// Sanitize the widget ID from the URL for security
-		$widget_id = sanitize_text_field( $_GET[ 'edit_widget_id' ] );
+		// Sanitize the widget ID
+		$widget_id = sanitize_key( $_GET[ 'edit_widget_id' ] );
 		
 		// Load existing widget data
 		$widget_data = get_option( 'weather_atlas_widget_' . $widget_id );

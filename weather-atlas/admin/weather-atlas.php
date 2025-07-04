@@ -9,24 +9,23 @@
 	 * @subpackage Weather_Atlas/admin
 	 */
 	
-	if ( isset( $_GET[ 'action' ], $_GET[ 'widget_id' ] ) && $_GET[ 'action' ] == 'delete' )
+	if ( isset( $_GET[ 'action' ], $_GET[ 'widget_id' ] ) )
 	{
-		// Sanitize the widget ID
+		$action    = sanitize_key( $_GET[ 'action' ] );
 		$widget_id = sanitize_text_field( $_GET[ 'widget_id' ] );
 		
-		// Check if widget exists before attempting deletion
-		if ( get_option( 'weather_atlas_widget_' . $widget_id ) !== FALSE )
+		if ( $action === 'delete' )
 		{
-			// Delete the widget option
-			delete_option( 'weather_atlas_widget_' . $widget_id );
-			
-			// Provide user feedback
-			$feedback_message = __( 'Widget deleted successfully.', 'weather-atlas' );
-		}
-		else
-		{
-			// Handle non-existent widget case
-			$feedback_message = __( 'This widget does not exist.', 'weather-atlas' );
+			// Check if widget exists before attempting deletion
+			if ( get_option( 'weather_atlas_widget_' . $widget_id ) !== FALSE )
+			{
+				delete_option( 'weather_atlas_widget_' . $widget_id );
+				$feedback_message = __( 'Widget deleted successfully.', 'weather-atlas' );
+			}
+			else
+			{
+				$feedback_message = __( 'This widget does not exist.', 'weather-atlas' );
+			}
 		}
 	}
 

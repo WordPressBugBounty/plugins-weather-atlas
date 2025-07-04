@@ -199,6 +199,11 @@ Selecting "Update Translations" will download and install your updated local tra
 
 == Changelog ==
 
+= 3.0.4 =
+*Release Date: 2025-07-04*
+
+* Security follow-up to 3.0.3 to ensure all vectors are properly secured
+
 = 3.0.3 =
 *Release Date: 2025-07-03*
 

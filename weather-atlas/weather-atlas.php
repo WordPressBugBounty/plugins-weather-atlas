@@ -8,7 +8,7 @@
 	 * Plugin Name:       Weather Atlas Widget
 	 * Plugin URI:        https://wordpress.org/plugins/weather-atlas/
 	 * Description:       Highly customizable, simple & beautiful Weather Widget / Responsive web design / Detailed current conditions, hourly & long-term weather forecast <strong>::::::::: <em>New feature!</em> ::::::::: Enhance your website by dedicating an entire page to the weather. In addition to all relevant weather information, the widget now displays detailed textual daily and long-term weather forecasts.</strong>
-	 * Version:           3.0.3
+	 * Version:           3.0.4
 	 * Author:            Weather Atlas
 	 * Author URI:        https://www.weather-atlas.com
 	 * License:           GPL-2.0+
@@ -28,7 +28,7 @@
 	 * Start at version 1.0.0 and use SemVer - https://semver.org
 	 * Rename this for your plugin and update it as you release new versions.
 	 */
-	define( 'WEATHER_ATLAS_VERSION', '3.0.3' );
+	define( 'WEATHER_ATLAS_VERSION', '3.0.4' );
 	
 	/**
 	 * The code that runs during plugin activation.
